@@ -2269,7 +2269,6 @@ int w_ImDrawList__OnChangedVtxOffset(lua_State *L)
 int w_CreateContext(lua_State *L)
 {
 	ImFontAtlas* shared_font_atlas = NULL; // skipping
-	
 	ImGuiContext* out = ImGui::CreateContext(shared_font_atlas);
 	
 	lua_pushlightuserdata(L, out);
@@ -6240,6 +6239,8 @@ int w_CheckboxFlags(lua_State* L)
 
 void wrap_imgui::addImguiWrappers(lua_State* L)
 {
+    printf("addImguiWrappers(lua_State *L)\n");
+
 	lua_pushcfunction(L, w_CreateContext);
 	lua_setfield(L, -2, "CreateContext");
 	lua_pushcfunction(L, w_DestroyContext);
@@ -6920,7 +6921,8 @@ void wrap_imgui::addImguiWrappers(lua_State* L)
 
 void wrap_imgui::createImguiTable(lua_State* L)
 {
-	lua_createtable(L, 0, 298); 
+	//lua_createtable(L, 0, 298); 
+    lua_newtable(L);
 	addImguiWrappers(L);
 }
 

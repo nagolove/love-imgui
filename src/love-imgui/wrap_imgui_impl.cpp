@@ -76,6 +76,11 @@ static int w_Render([[maybe_unused]] lua_State *L)
 	return 0;
 }
 
+static int w_NewFrame(lua_State *L)
+{
+    NewFrame();
+}
+
 // Util
 const char* getRealDirectoryIfExists(lua_State *L, const char* relativePath)
 {
@@ -251,6 +256,7 @@ static const struct luaL_Reg imguilib[] = {
 	{ "ShutDown", w_ShutDown },
 	{ "Init", w_Init },
 	{ "Render", w_Render },
+    { "NewFrame", w_NewFrame },
 	{ "MouseMoved", w_MouseMoved },
 	{ "MousePressed", w_MousePressed },
 	{ "MouseReleased", w_MouseReleased },
@@ -267,6 +273,8 @@ static const struct luaL_Reg imguilib[] = {
 
 extern "C" int luaopen_imgui(lua_State *L)
 {
+    printf("luaopen_imgui\n");
+
 	lua_newtable(L);
 	lua_pushvalue(L, -1);
 	lua_setglobal(L, "imgui");

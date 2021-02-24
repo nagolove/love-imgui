@@ -123,6 +123,9 @@ static void ImGui_Impl_SetClipboardText([[maybe_unused]] void* user_data, const 
 bool Init(lua_State *L)
 {
 	g_ctx = ImGui::CreateContext();
+    
+    printf("Init\n");
+
 	ImGui::SetCurrentContext(g_ctx);
 	ImGuiIO& io = ImGui::GetIO();
 
