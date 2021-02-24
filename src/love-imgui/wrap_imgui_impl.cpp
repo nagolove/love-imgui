@@ -278,8 +278,8 @@ extern "C" int luaopen_imgui(lua_State *L)
 	lua_newtable(L);
 	lua_pushvalue(L, -1);
 	lua_setglobal(L, "imgui");
-	wrap_imgui::addImguiWrappers(L);
-	luaL_register(L, nullptr, imguilib);
+    wrap_imgui::addImguiWrappers(L);
+    luaL_register(L, nullptr, imguilib);
 
 	return 1;
 }

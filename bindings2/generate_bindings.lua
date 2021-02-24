@@ -26,6 +26,7 @@ local function generateFile(fname, templateFname, imgui, helpers)
 end
 
 local function main()
+    --[[
 	do
 		-- TODO: we should stop directly manipulating the imgui table, so we can share it
 		local imgui = Parse.parseHeaders {
@@ -49,7 +50,8 @@ local function main()
 			"bindings2/wren/api_details.md",
 			imgui, wrenHelpers)
 	end
-
+    --]]
+    
 	do
 		-- TODO: we should stop directly manipulating the imgui table, so we can share it
 		local imgui = Parse.parseHeaders {
@@ -58,6 +60,7 @@ local function main()
 		}
 		local luaHelpers = require 'bindings2.lua.generate'
 		local luaAutocompleteHelpers = require 'bindings2.lua.generate_autocomplete'
+        local tlHelpers = require 'bindings2.lua.generate_tl'
 		local luaTypes = require 'bindings2.lua.types'
 		luaTypes.generateTypeCheckers(imgui)
 		imgui.output = "lua"
@@ -77,6 +80,11 @@ local function main()
 			"src/lua-bindings/autocomplete.json",
 			"bindings2/lua/autocomplete.json",
 			imgui, luaAutocompleteHelpers)
+		generateFile(
+			"src/lua-bindings/imgui.d.tl",
+			"bindings2/lua/imgui.d.tl",
+			--imgui, luaHelpers)
+            imgui, tlHelpers)
 	end
 end
 
