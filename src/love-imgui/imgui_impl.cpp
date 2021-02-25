@@ -14,6 +14,7 @@ static std::string					g_iniPath;
 static std::map<std::string, int>	g_keyMap;
 static lua_State					*g_L;
 static ImGuiContext					*g_ctx;
+static ImFont                       *globalFont = nullptr;
 
 static void dumpstack (lua_State *L) {
   int top=lua_gettop(L);
@@ -140,10 +141,34 @@ static void ImGui_Impl_SetClipboardText([[maybe_unused]] void* user_data, const 
 	lua_pop(g_L, 1);
 }
 
+void updateTextureObject(lua_State *L)
+{
+    printf("updateTextureObject\n");
+
+	ImGuiIO& io = ImGui::GetIO();
+    // Create the texture object
+    unsigned char* pixels;
+    int width, height;
+    io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);
+    
+    lua_getglobal(L, "imgui");
+    lua_pushnumber(L, width);
+    lua_setfield(L, -2, "textureWidth");
+    lua_pushnumber(L, height);
+    lua_setfield(L, -2, "textureHeight");
+    lua_pushlstring(L, (char *)pixels, width * height * 4);
+    lua_setfield(L, -2, "texturePixels");
+    luaL_dostring(L, "imgui.textureObject = love.graphics.newImage(love.image.newImageData(imgui.textureWidth, imgui.textureHeight, 'rgba8', imgui.texturePixels))\
+                      imgui.vertexformat = { {\"VertexPosition\", \"float\", 2}, {\"VertexTexCoord\", \"float\", 2}, {\"VertexColor\", \"byte\", 4} }");
+    lua_pop(L, 1);
+
+    luaL_dostring(L, "love.image.newImageData(imgui.textureWidth, imgui.textureHeight, 'rgba8', imgui.texturePixels):encode('png', 'textureobject.png')");
+    dumpstack(L);
+}
+
 //
 // Public part
 //
-
 bool Init(lua_State *L)
 {
 	g_ctx = ImGui::CreateContext();
@@ -151,26 +176,12 @@ bool Init(lua_State *L)
     printf("Init\n");
 
 	ImGui::SetCurrentContext(g_ctx);
-	ImGuiIO& io = ImGui::GetIO();
+    ImGuiIO& io = ImGui::GetIO();
 
 	// LUA state
 	g_L = L;
 
-	// Create the texture object
-	unsigned char* pixels;
-	int width, height;
-	io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);
-	
-	lua_getglobal(L, "imgui");
-	lua_pushnumber(L, width);
-	lua_setfield(L, -2, "textureWidth");
-	lua_pushnumber(L, height);
-	lua_setfield(L, -2, "textureHeight");
-	lua_pushlstring(L, (char *)pixels, width * height * 4);
-	lua_setfield(L, -2, "texturePixels");
-	luaL_dostring(L, "imgui.textureObject = love.graphics.newImage(love.image.newImageData(imgui.textureWidth, imgui.textureHeight, 'rgba8', imgui.texturePixels))\
-					  imgui.vertexformat = { {\"VertexPosition\", \"float\", 2}, {\"VertexTexCoord\", \"float\", 2}, {\"VertexColor\", \"byte\", 4} }");
-	lua_pop(L, 1);
+    updateTextureObject(L);
 
 	// Key map
 	g_keyMap["tab"] = 1;
@@ -269,10 +280,14 @@ void NewFrame()
 
 	// Start the frame
 	ImGui::NewFrame();
+    if (globalFont != nullptr)
+        ImGui::PushFont(globalFont);
 }
 
 void Render()
 {
+    if (globalFont != nullptr)
+        ImGui::PopFont();
 	ImGui::Render();
 	ImGui_Impl_RenderDrawLists(ImGui::GetDrawData());
 }
@@ -398,7 +413,16 @@ void SetGlobalFontFromFileTTF(const char *path, float size_pixels, float spacing
     conf.OversampleV = static_cast<int>(oversample_y);
     conf.GlyphExtraSpacing.x = spacing_x;
     conf.GlyphExtraSpacing.y = spacing_y;
-    io.Fonts->AddFontFromFileTTF(path, size_pixels, &conf);
+    ImFont *font = io.Fonts->AddFontFromFileTTF(path, size_pixels, &conf);
+    globalFont = font;
+    printf("SetGlobalFontFromFileTTF %p\n", font);
+    printf("g_L %p\n", g_L);
+    updateTextureObject(g_L);
+    //io.Fonts->GetTexDataAsRGBA32(); // or GetTexDataAsAlpha8()
+    //unsigned char* tex_pixels = NULL;
+    //int tex_width, tex_height;
+    //io.Fonts->GetTexDataAsRGBA32(&tex_pixels, &tex_width, &tex_height);
+    //ImGui::PushFont(font);
 }
 
 void SetGlobalFontFromArchiveTTF(const char *path, float size_pixels, float spacing_x, float spacing_y, float oversample_x, float oversample_y)
