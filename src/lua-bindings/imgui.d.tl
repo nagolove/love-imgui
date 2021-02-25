@@ -631,7 +631,7 @@ global type imgui = record
   CloseCurrentPopup: function()
   CollapsingHeader: function(label: string,p_visible: boolean,flags: flags): boolean,boolean
   ColorButton: function(desc_id: string,col_x: number,col_y: number,col_z: number,col_w: number,flags: flags,size_x: number,size_y: number): boolean
-  ColorConvertU32ToFloat4: function(in: number): number,number,number,number
+  ColorConvertU32ToFloat4: function(in_: number): number,number,number,number
   ColorEdit3: function(label: string,col: table,flags: flags): number,number,number,boolean
   ColorEdit4: function(label: string,col: table,flags: flags): number,number,number,number,boolean
   ColorPicker3: function(label: string,col: table,flags: flags): number,number,number,boolean
@@ -753,9 +753,9 @@ global type imgui = record
   IsItemToggledOpen: function(): boolean
   IsItemVisible: function(): boolean
   IsKeyDown: function(user_key_index: number): boolean
-  IsKeyPressed: function(user_key_index: number,repeat: boolean): boolean
+  IsKeyPressed: function(user_key_index: number,repeat_: boolean): boolean
   IsKeyReleased: function(user_key_index: number): boolean
-  IsMouseClicked: function(button: ImGuiMouseButton_,repeat: boolean): boolean
+  IsMouseClicked: function(button: ImGuiMouseButton_,repeat_: boolean): boolean
   IsMouseDoubleClicked: function(button: ImGuiMouseButton_): boolean
   IsMouseDown: function(button: ImGuiMouseButton_): boolean
   IsMouseDragging: function(button: ImGuiMouseButton_,lock_threshold: number): boolean
@@ -797,7 +797,7 @@ global type imgui = record
   PopTextWrapPos: function()
   ProgressBar: function(fraction: number,size_arg_x: number,size_arg_y: number,overlay: string)
   PushAllowKeyboardFocus: function(allow_keyboard_focus: boolean)
-  PushButtonRepeat: function(repeat: boolean)
+  PushButtonRepeat: function(repeat_: boolean)
   PushClipRect: function(clip_rect_min_x: number,clip_rect_min_y: number,clip_rect_max_x: number,clip_rect_max_y: number,intersect_with_current_clip_rect: boolean)
   PushID: function(int_id: number)
   PushItemWidth: function(item_width: number)

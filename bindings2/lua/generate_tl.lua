@@ -25,6 +25,30 @@ local function createEnumRefType(name)
 	return {type = 'ref', name = name}
 end
 
+local keywords = {
+    ["do"] = true,
+    ["end"] = true,
+    ["while"] = true,
+    ["repeat"] = true,
+    ["until"] = true,
+    ["if"] = true,
+    ["then"] = true,
+    ["elseif"] = true,
+    ["else"] = true,
+    ["for"] = true,
+    ["in"] = true,
+    ["function"] = true,
+    ["local"] = true,
+    ["return"] = true,
+    ["break"] = true,
+    ["nil"] = true,
+    ["true"] = true,
+    ["false"] = true,
+    ["and"] = true,
+    ["or"] = true,
+    ["not"] = true,
+}
+
 local function addFunctions(tableType, imguiFunctions)
 	for name, fnData in util.sortedPairs(imguiFunctions.validNames) do
 		local fn = createFunctionType()
@@ -106,6 +130,14 @@ local helpers = {}
 local aliases = {}
 local functions = ''
 
+local function checkArgNameForKeyword(name)
+    if keywords[name] then
+        return name .. '_'
+    else
+        return name
+    end
+end
+
 local function printFuncs(t)
     local dict = {}
 
@@ -127,12 +159,13 @@ local function printFuncs(t)
                 if i == #v.luaArgumentTypes then
                     comma = ''
                 end
+                local name = checkArgNameForKeyword(argtype.name)
                 if argtype.type == 'enum' then
-                    params = params .. argtype.name .. ': ' .. argtype.enum .. '_' .. comma
+                    params = params .. name .. ': ' .. argtype.enum .. '_' .. comma
                     --table.insert(aliases, argtype.enum)
                     aliases[argtype.enum] = true
                 else
-                    params = params .. argtype.name .. ': ' .. argtype.type .. comma
+                    params = params .. name .. ': ' .. argtype.type .. comma
                 end
             end
         end

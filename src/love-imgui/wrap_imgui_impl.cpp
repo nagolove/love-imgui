@@ -79,6 +79,7 @@ static int w_Render([[maybe_unused]] lua_State *L)
 static int w_NewFrame(lua_State *L)
 {
     NewFrame();
+    return 0;
 }
 
 // Util
@@ -235,7 +236,7 @@ static int w_SetGlobalFontFromArchiveTTF(lua_State *L)
 		return 0;
 	}
     */
-    printf("path0 %s\n", path);
+    //printf("path0 %s\n", path);
 
 	char fullPath[4096] = {0};
 	//snprintf(&(fullPath[0]), sizeof(fullPath) - 1, "%s/%s", basePath, path);
@@ -306,7 +307,7 @@ static const struct luaL_Reg imguilib[] = {
 
 extern "C" int luaopen_imgui(lua_State *L)
 {
-    printf("luaopen_imgui\n");
+    //printf("luaopen_imgui\n");
 
 	lua_newtable(L);
 	lua_pushvalue(L, -1);

@@ -143,7 +143,7 @@ static void ImGui_Impl_SetClipboardText([[maybe_unused]] void* user_data, const 
 
 void updateTextureObject(lua_State *L)
 {
-    printf("updateTextureObject\n");
+    //printf("updateTextureObject\n");
 
 	ImGuiIO& io = ImGui::GetIO();
     // Create the texture object
@@ -163,7 +163,7 @@ void updateTextureObject(lua_State *L)
     lua_pop(L, 1);
 
     luaL_dostring(L, "love.image.newImageData(imgui.textureWidth, imgui.textureHeight, 'rgba8', imgui.texturePixels):encode('png', 'textureobject.png')");
-    dumpstack(L);
+    //dumpstack(L);
 }
 
 //
@@ -173,7 +173,7 @@ bool Init(lua_State *L)
 {
 	g_ctx = ImGui::CreateContext();
     
-    printf("Init\n");
+    //printf("Init\n");
 
 	ImGui::SetCurrentContext(g_ctx);
     ImGuiIO& io = ImGui::GetIO();
@@ -415,8 +415,8 @@ void SetGlobalFontFromFileTTF(const char *path, float size_pixels, float spacing
     conf.GlyphExtraSpacing.y = spacing_y;
     ImFont *font = io.Fonts->AddFontFromFileTTF(path, size_pixels, &conf);
     globalFont = font;
-    printf("SetGlobalFontFromFileTTF %p\n", font);
-    printf("g_L %p\n", g_L);
+    //printf("SetGlobalFontFromFileTTF %p\n", font);
+    //printf("g_L %p\n", g_L);
     updateTextureObject(g_L);
     //io.Fonts->GetTexDataAsRGBA32(); // or GetTexDataAsAlpha8()
     //unsigned char* tex_pixels = NULL;
@@ -435,8 +435,8 @@ void SetGlobalFontFromArchiveTTF(const char *path, float size_pixels, float spac
     conf.GlyphExtraSpacing.y = spacing_y;
     conf.FontDataOwnedByAtlas = false;
     
-    dumpstack(g_L);
-    printf("dump1\n");
+    //dumpstack(g_L);
+    //printf("dump1\n");
 
     //luaL_dostring(g_L, "imgui.fontdata = love.filesystem.newFileData(path)\
             //fontdata:getPointer()");
@@ -457,18 +457,18 @@ void SetGlobalFontFromArchiveTTF(const char *path, float size_pixels, float spac
 
     luaL_dostring(g_L, "imgui._ptr = imgui.fontdata:getPointer()");
     luaL_dostring(g_L, "imgui._size = imgui.fontdata:getSize()");
-    luaL_dostring(g_L, "print('_ptr', imgui._ptr)");
-    luaL_dostring(g_L, "print('_size', imgui._size)");
+    //luaL_dostring(g_L, "print('_ptr', imgui._ptr)");
+    //luaL_dostring(g_L, "print('_size', imgui._size)");
 
     lua_getglobal(g_L, "imgui");
 
     lua_getfield(g_L, -1, "_ptr");
     void *ptr = lua_touserdata(g_L, -1);
-    printf("ptr %p\n", ptr);
+    //printf("ptr %p\n", ptr);
 
     lua_getfield(g_L, -2, "_size");
-    int size = lua_tonumber(g_L, -1);
-    printf("size %d\n", size);
+    int size = (int)lua_tonumber(g_L, -1);
+    //printf("size %d\n", size);
 
     //luaL_dostring(g_L, "print('pointer', imgui._tmp)");
     
@@ -486,9 +486,13 @@ void SetGlobalFontFromArchiveTTF(const char *path, float size_pixels, float spac
 
     //luaL_dostring(g_L, "imgui.fontdata:getPointer()");
 
-    dumpstack(g_L);
-    printf("dump2\n");
+    //dumpstack(g_L);
+    //printf("dump2\n");
 
-    io.Fonts->AddFontFromMemoryTTF(ptr, size, size_pixels, &conf);
+    ImFont *font = io.Fonts->AddFontFromMemoryTTF(ptr, size, size_pixels, &conf);
+    globalFont = font;
+    //printf("SetGlobalFontFromFileTTF %p\n", font);
+    //printf("g_L %p\n", g_L);
+    updateTextureObject(g_L);
 }
 
