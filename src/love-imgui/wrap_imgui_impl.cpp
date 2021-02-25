@@ -216,6 +216,38 @@ static int w_SetGlobalFontFromFileTTF(lua_State *L)
 	return 0;
 }
 
+static int w_SetGlobalFontFromArchiveTTF(lua_State *L)
+{
+	size_t size;
+	const char *path = luaL_checklstring(L, 1, &size);
+	float size_pixels  = static_cast<float>(luaL_checknumber(L, 2));
+	float spacing_x    = static_cast<float>(luaL_optnumber(L, 3, 0));
+	float spacing_y    = static_cast<float>(luaL_optnumber(L, 4, 0));
+	float oversample_x = static_cast<float>(luaL_optnumber(L, 5, 1));
+	float oversample_y = static_cast<float>(luaL_optnumber(L, 6, 1));
+
+	//const char* basePath = getRealDirectoryIfExists(L, path);
+	const char* basePath = path;
+    /*
+	if (basePath == nullptr) {
+		lua_pushstring(L, "File does not exist.");
+		lua_error(L);
+		return 0;
+	}
+    */
+    printf("path0 %s\n", path);
+
+	char fullPath[4096] = {0};
+	//snprintf(&(fullPath[0]), sizeof(fullPath) - 1, "%s/%s", basePath, path);
+	snprintf(&(fullPath[0]), sizeof(fullPath) - 1, "%s/%s", basePath, path);
+    SetGlobalFontFromArchiveTTF(&(path[0]), size_pixels, spacing_x, spacing_y,
+                            oversample_x, oversample_y);
+	//SetGlobalFontFromArchiveTTF(&(fullPath[0]), size_pixels, spacing_x, spacing_y,
+							//oversample_x, oversample_y);
+	lua_settop(L, 0);
+	return 0;
+}
+
 static int w_AddFontFromFileTTF(lua_State *L) {
     size_t filenameSize;
     const char* filename = luaL_checklstring(L, 1, &filenameSize);
@@ -251,6 +283,7 @@ static const struct luaL_Reg imguilib[] = {
 	// Custom
 	{ "SetGlobalFontFromFileTTF", w_SetGlobalFontFromFileTTF },
 	{ "AddFontFromFileTTF", w_AddFontFromFileTTF },
+    { "SetGlobalFontFromArchiveTTF", w_SetGlobalFontFromArchiveTTF },
 
 	// Implementation
 	{ "ShutDown", w_ShutDown },

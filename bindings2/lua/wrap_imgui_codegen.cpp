@@ -844,12 +844,6 @@ void wrap_imgui::addImguiWrappers(lua_State* L)
 	lua_pushcfunction(L, w_<%- name %>);
 	lua_setfield(L, -2, "<%- name %>");
 <% end -%>
-
-	luaL_newmetatable(L, "ImDrawList");
-<% for name in util.lineNumberPairs(imgui.functions.ImDrawList.validNames) do -%>
-	lua_pushcfunction(L, w_ImDrawList_<%- name %>);
-	lua_setfield(L, -2, "<%- name %>");
-<% end -%>
 }
 
 void wrap_imgui::createImguiTable(lua_State* L)

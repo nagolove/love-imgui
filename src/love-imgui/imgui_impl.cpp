@@ -15,6 +15,30 @@ static std::map<std::string, int>	g_keyMap;
 static lua_State					*g_L;
 static ImGuiContext					*g_ctx;
 
+static void dumpstack (lua_State *L) {
+  int top=lua_gettop(L);
+  for (int i=1; i <= top; i++) {
+    printf("%d\t%s\t", i, luaL_typename(L,i));
+    switch (lua_type(L, i)) {
+      case LUA_TNUMBER:
+        printf("%g\n",lua_tonumber(L,i));
+        break;
+      case LUA_TSTRING:
+        printf("%s\n",lua_tostring(L,i));
+        break;
+      case LUA_TBOOLEAN:
+        printf("%s\n", (lua_toboolean(L, i) ? "true" : "false"));
+        break;
+      case LUA_TNIL:
+        printf("%s\n", "nil");
+        break;
+      default:
+        printf("%p\n",lua_topointer(L,i));
+        break;
+    }
+  }
+}
+
 // This is the main rendering function that you have to implement and provide to ImGui (via setting up 'RenderDrawListsFn' in the ImGuiIO structure)
 // If text or lines are blurry when integrating ImGui in your engine:
 // - in your Render function, try translating your projection matrix by (0.5f,0.5f) or (0.375f,0.375f)
@@ -376,3 +400,71 @@ void SetGlobalFontFromFileTTF(const char *path, float size_pixels, float spacing
     conf.GlyphExtraSpacing.y = spacing_y;
     io.Fonts->AddFontFromFileTTF(path, size_pixels, &conf);
 }
+
+void SetGlobalFontFromArchiveTTF(const char *path, float size_pixels, float spacing_x, float spacing_y, float oversample_x, float oversample_y)
+{
+    ImGuiIO& io = ImGui::GetIO();
+    ImFontConfig conf;
+    conf.OversampleH = static_cast<int>(oversample_x);
+    conf.OversampleV = static_cast<int>(oversample_y);
+    conf.GlyphExtraSpacing.x = spacing_x;
+    conf.GlyphExtraSpacing.y = spacing_y;
+    conf.FontDataOwnedByAtlas = false;
+    
+    dumpstack(g_L);
+    printf("dump1\n");
+
+    //luaL_dostring(g_L, "imgui.fontdata = love.filesystem.newFileData(path)\
+            //fontdata:getPointer()");
+    //luaL_dostring(g_L, "print('imgui.fontdataPath', imgui.fontdataPath)");
+
+    lua_getglobal(g_L, "imgui");
+    lua_pushstring(g_L, path);
+    //printf("path %s\n", path);
+    lua_setfield(g_L, -2, "fontdataPath");
+
+    //luaL_dostring(g_L, "print('imgui.fontdataPath', imgui.fontdataPath)");
+    luaL_dostring(g_L, "imgui.fontdata = love.filesystem.newFileData(imgui.fontdataPath)");
+    //luaL_dostring(g_L, "imgui.fontdata = love.filesystem.newFileData('DroidSansMono.ttf')");
+    //luaL_dostring(g_L, "imgui.fontdata:getPointer()");
+    //luaL_dostring(g_L, "imgui.fontdata:getPointer()");
+    //luaL_dostring(g_L, "print('lol')");
+    //luaL_dostring(g_L, "print('kek', imgui.fontdata:getPointer())");
+
+    luaL_dostring(g_L, "imgui._ptr = imgui.fontdata:getPointer()");
+    luaL_dostring(g_L, "imgui._size = imgui.fontdata:getSize()");
+    luaL_dostring(g_L, "print('_ptr', imgui._ptr)");
+    luaL_dostring(g_L, "print('_size', imgui._size)");
+
+    lua_getglobal(g_L, "imgui");
+
+    lua_getfield(g_L, -1, "_ptr");
+    void *ptr = lua_touserdata(g_L, -1);
+    printf("ptr %p\n", ptr);
+
+    lua_getfield(g_L, -2, "_size");
+    int size = lua_tonumber(g_L, -1);
+    printf("size %d\n", size);
+
+    //luaL_dostring(g_L, "print('pointer', imgui._tmp)");
+    
+    //lua_getglobal(g_L, "imgui");
+    //lua_getfield(g_L, -1, "fontdata");
+    //lua_getfield(g_L, -1, "getPointer");
+    //lua_call(g_L, 0, 1);
+
+    /*
+    luaL_dostring(g_L, "local t = {1, 2, 3}\
+                        for k, v in pairs(imgui.fontdata) do\
+                            print(k, v)\
+                        end");
+    */
+
+    //luaL_dostring(g_L, "imgui.fontdata:getPointer()");
+
+    dumpstack(g_L);
+    printf("dump2\n");
+
+    io.Fonts->AddFontFromMemoryTTF(ptr, size, size_pixels, &conf);
+}
+
