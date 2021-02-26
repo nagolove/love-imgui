@@ -1,5 +1,28 @@
 global type imgui = record
 
+    -- attention : not use it
+    type Image_ = number
+
+    SetGlobalFontFromFileTTF: function(fname: string, pixSize: number)
+    AddFontFromFileTTF: function(fname: string, pixSize: number)
+    SetGlobalFontFromArchiveTTF: function(fname: string, pixSize: number)
+    ShutDown: function()
+    Init: function()
+    Render: function()
+    NewFrame: function()
+    MouseMoved: function(number, number)
+    MousePressed: function(number)
+    MouseReleased: function(number)
+    WheelMoved: function(number)
+    KeyPressed: function(string)
+    KeyReleased: function(string)
+    TextInput: function(string)
+    GetWantCaptureKeyboard: function()
+    GetWantCaptureMouse: function()
+    GetWantTextInput: function()
+
+
+
 
 -- enums
   enum ImGuiWindowFlags
@@ -586,37 +609,56 @@ global type imgui = record
 
 
 -- aliased types
-  type ImGuiStyleVar_ = string
-  type ImGuiDir_ = string
-  type ImGuiTableBgTarget_ = string
-  type ImGuiMouseButton_ = string
-  type ImGuiCol_ = string
-  type ImGuiKey_ = string
-  type ImGuiCond_ = string
+  type ImDrawCornerFlags_ = string
+  type ImGuiTabItemFlags_ = string
   type ImGuiMouseCursor_ = string
+  type ImGuiTabBarFlags_ = string
+  type ImGuiColorEditFlags_ = string
+  type ImGuiTreeNodeFlags_ = string
+  type ImGuiFocusedFlags_ = string
+  type ImGuiTableColumnFlags_ = string
+  type ImGuiHoveredFlags_ = string
+  type ImGuiCond_ = string
+  type ImGuiTableBgTarget_ = string
+  type ImGuiPopupFlags_ = string
+  type ImGuiSliderFlags_ = string
+  type ImGuiDragDropFlags_ = string
+  type ImGuiTableFlags_ = string
+  type ImGuiCol_ = string
+  type ImGuiSelectableFlags_ = string
+  type ImGuiDir_ = string
+  type ImGuiStyleVar_ = string
+  type ImGuiTableRowFlags_ = string
+  type ImGuiDockNodeFlags_ = string
+  type ImGuiInputTextFlags_ = string
+  type ImGuiMouseButton_ = string
+  type ImGuiKey_ = string
+  type ImGuiButtonFlags_ = string
+  type ImGuiWindowFlags_ = string
+  type ImGuiComboFlags_ = string
 
 
 -- functions
   AlignTextToFramePadding: function()
   ArrowButton: function(str_id: string,dir: ImGuiDir_): boolean
-  Begin: function(name: string,p_open: boolean,flags: flags): boolean,boolean
-  BeginChild: function(id: number,size_x: number,size_y: number,border: boolean,flags: flags): boolean
-  BeginChildFrame: function(id: number,size_x: number,size_y: number,flags: flags): boolean
-  BeginCombo: function(label: string,preview_value: string,flags: flags): boolean
-  BeginDragDropSource: function(flags: flags): boolean
+  Begin: function(name: string,p_open: boolean,flags: ImGuiWindowFlags_): boolean,boolean
+  BeginChild: function(id: number,size_x: number,size_y: number,border: boolean,flags: ImGuiWindowFlags_): boolean
+  BeginChildFrame: function(id: number,size_x: number,size_y: number,flags: ImGuiWindowFlags_): boolean
+  BeginCombo: function(label: string,preview_value: string,flags: ImGuiComboFlags_): boolean
+  BeginDragDropSource: function(flags: ImGuiDragDropFlags_): boolean
   BeginDragDropTarget: function(): boolean
   BeginGroup: function()
   BeginMainMenuBar: function(): boolean
   BeginMenu: function(label: string,enabled: boolean): boolean
   BeginMenuBar: function(): boolean
-  BeginPopup: function(str_id: string,flags: flags): boolean
-  BeginPopupContextItem: function(str_id: string,popup_flags: flags): boolean
-  BeginPopupContextVoid: function(str_id: string,popup_flags: flags): boolean
-  BeginPopupContextWindow: function(str_id: string,popup_flags: flags): boolean
-  BeginPopupModal: function(name: string,p_open: boolean,flags: flags): boolean,boolean
-  BeginTabBar: function(str_id: string,flags: flags): boolean
-  BeginTabItem: function(label: string,p_open: boolean,flags: flags): boolean,boolean
-  BeginTable: function(str_id: string,column: number,flags: flags,outer_size_x: number,outer_size_y: number,inner_width: number): boolean
+  BeginPopup: function(str_id: string,flags: ImGuiWindowFlags_): boolean
+  BeginPopupContextItem: function(str_id: string,popup_flags: ImGuiPopupFlags_): boolean
+  BeginPopupContextVoid: function(str_id: string,popup_flags: ImGuiPopupFlags_): boolean
+  BeginPopupContextWindow: function(str_id: string,popup_flags: ImGuiPopupFlags_): boolean
+  BeginPopupModal: function(name: string,p_open: boolean,flags: ImGuiWindowFlags_): boolean,boolean
+  BeginTabBar: function(str_id: string,flags: ImGuiTabBarFlags_): boolean
+  BeginTabItem: function(label: string,p_open: boolean,flags: ImGuiTabItemFlags_): boolean,boolean
+  BeginTable: function(str_id: string,column: number,flags: ImGuiTableFlags_,outer_size_x: number,outer_size_y: number,inner_width: number): boolean
   BeginTooltip: function()
   Bullet: function()
   BulletText: function(fmt: string)
@@ -629,30 +671,29 @@ global type imgui = record
   Checkbox: function(label: string,v: boolean): boolean,boolean
   CheckboxFlags: function(label: string,flags: number,flags_value: number): number,boolean
   CloseCurrentPopup: function()
-  CollapsingHeader: function(label: string,p_visible: boolean,flags: flags): boolean,boolean
-  ColorButton: function(desc_id: string,col_x: number,col_y: number,col_z: number,col_w: number,flags: flags,size_x: number,size_y: number): boolean
+  CollapsingHeader: function(label: string,p_visible: boolean,flags: ImGuiTreeNodeFlags_): boolean,boolean
+  ColorButton: function(desc_id: string,col_x: number,col_y: number,col_z: number,col_w: number,flags: ImGuiColorEditFlags_,size_x: number,size_y: number): boolean
   ColorConvertU32ToFloat4: function(in_: number): number,number,number,number
-  ColorEdit3: function(label: string,col: table,flags: flags): number,number,number,boolean
-  ColorEdit4: function(label: string,col: table,flags: flags): number,number,number,number,boolean
-  ColorPicker3: function(label: string,col: table,flags: flags): number,number,number,boolean
+  ColorEdit3: function(label: string,col: table,flags: ImGuiColorEditFlags_): number,number,number,boolean
+  ColorEdit4: function(label: string,col: table,flags: ImGuiColorEditFlags_): number,number,number,number,boolean
+  ColorPicker3: function(label: string,col: table,flags: ImGuiColorEditFlags_): number,number,number,boolean
   ColorPicker4: function()
   Columns: function(count: number,id: string,border: boolean)
   Combo: function(label: string,current_item: number,items_separated_by_zeros: string,popup_max_height_in_items: number): number,boolean
-  CreateContext: function(): lightuserdata
-  DestroyContext: function(ctx: unknown)
+  DestroyContext: function(ctx: any)
   DestroyPlatformWindows: function()
-  DockSpace: function(id: number,size_x: number,size_y: number,flags: flags)
-  DockSpaceOverViewport: function(flags: flags): number
-  DragFloat: function(label: string,v: number,v_speed: number,v_min: number,v_max: number,format: string,flags: flags): number,boolean
-  DragFloat2: function(label: string,v: table,v_speed: number,v_min: number,v_max: number,format: string,flags: flags): number,number,boolean
-  DragFloat3: function(label: string,v: table,v_speed: number,v_min: number,v_max: number,format: string,flags: flags): number,number,number,boolean
-  DragFloat4: function(label: string,v: table,v_speed: number,v_min: number,v_max: number,format: string,flags: flags): number,number,number,number,boolean
-  DragFloatRange2: function(label: string,v_current_min: number,v_current_max: number,v_speed: number,v_min: number,v_max: number,format: string,format_max: string,flags: flags): number,number,boolean
-  DragInt: function(label: string,v: number,v_speed: number,v_min: number,v_max: number,format: string,flags: flags): number,boolean
-  DragInt2: function(label: string,v: table,v_speed: number,v_min: number,v_max: number,format: string,flags: flags): number,number,boolean
-  DragInt3: function(label: string,v: table,v_speed: number,v_min: number,v_max: number,format: string,flags: flags): number,number,number,boolean
-  DragInt4: function(label: string,v: table,v_speed: number,v_min: number,v_max: number,format: string,flags: flags): number,number,number,number,boolean
-  DragIntRange2: function(label: string,v_current_min: number,v_current_max: number,v_speed: number,v_min: number,v_max: number,format: string,format_max: string,flags: flags): number,number,boolean
+  DockSpace: function(id: number,size_x: number,size_y: number,flags: ImGuiDockNodeFlags_)
+  DockSpaceOverViewport: function(flags: ImGuiDockNodeFlags_): number
+  DragFloat: function(label: string,v: number,v_speed: number,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,boolean
+  DragFloat2: function(label: string,v: table,v_speed: number,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,number,boolean
+  DragFloat3: function(label: string,v: table,v_speed: number,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,number,number,boolean
+  DragFloat4: function(label: string,v: table,v_speed: number,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,number,number,number,boolean
+  DragFloatRange2: function(label: string,v_current_min: number,v_current_max: number,v_speed: number,v_min: number,v_max: number,format: string,format_max: string,flags: ImGuiSliderFlags_): number,number,boolean
+  DragInt: function(label: string,v: number,v_speed: number,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,boolean
+  DragInt2: function(label: string,v: table,v_speed: number,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,number,boolean
+  DragInt3: function(label: string,v: table,v_speed: number,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,number,number,boolean
+  DragInt4: function(label: string,v: table,v_speed: number,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,number,number,number,boolean
+  DragIntRange2: function(label: string,v_current_min: number,v_current_max: number,v_speed: number,v_min: number,v_max: number,format: string,format_max: string,flags: ImGuiSliderFlags_): number,number,boolean
   Dummy: function(size_x: number,size_y: number)
   End: function()
   EndChild: function()
@@ -670,7 +711,6 @@ global type imgui = record
   EndTabItem: function()
   EndTable: function()
   EndTooltip: function()
-  GetBackgroundDrawList: function(): userdata
   GetClipboardText: function(): number
   GetColumnIndex: function(): number
   GetColumnOffset: function(column_index: number): number
@@ -678,7 +718,6 @@ global type imgui = record
   GetColumnsCount: function(): number
   GetContentRegionAvail: function(): number,number
   GetContentRegionMax: function(): number,number
-  GetCurrentContext: function(): lightuserdata
   GetCursorPos: function(): number,number
   GetCursorPosX: function(): number
   GetCursorPosY: function(): number
@@ -686,7 +725,6 @@ global type imgui = record
   GetCursorStartPos: function(): number,number
   GetFontSize: function(): number
   GetFontTexUvWhitePixel: function(): number,number
-  GetForegroundDrawList: function(): userdata
   GetFrameCount: function(): number
   GetFrameHeight: function(): number
   GetFrameHeightWithSpacing: function(): number
@@ -704,7 +742,6 @@ global type imgui = record
   GetScrollMaxY: function(): number
   GetScrollX: function(): number
   GetScrollY: function(): number
-  GetStyle: function(): lightuserdata
   GetStyleColorName: function(idx: ImGuiCol_): number
   GetStyleColorVec4: function(idx: ImGuiCol_): number,number,number,number
   GetTextLineHeight: function(): number
@@ -717,27 +754,26 @@ global type imgui = record
   GetWindowContentRegionWidth: function(): number
   GetWindowDockID: function(): number
   GetWindowDpiScale: function(): number
-  GetWindowDrawList: function(): userdata
   GetWindowHeight: function(): number
   GetWindowPos: function(): number,number
   GetWindowSize: function(): number,number
   GetWindowWidth: function(): number
-  Image: function(user_texture_id: Image,size_x: number,size_y: number,uv0_x: number,uv0_y: number,uv1_x: number,uv1_y: number,tint_col_x: number,tint_col_y: number,tint_col_z: number,tint_col_w: number,border_col_x: number,border_col_y: number,border_col_z: number,border_col_w: number)
-  ImageButton: function(user_texture_id: Image,size_x: number,size_y: number,uv0_x: number,uv0_y: number,uv1_x: number,uv1_y: number,frame_padding: number,bg_col_x: number,bg_col_y: number,bg_col_z: number,bg_col_w: number,tint_col_x: number,tint_col_y: number,tint_col_z: number,tint_col_w: number): boolean
+  Image: function(user_texture_id: Image_,size_x: number,size_y: number,uv0_x: number,uv0_y: number,uv1_x: number,uv1_y: number,tint_col_x: number,tint_col_y: number,tint_col_z: number,tint_col_w: number,border_col_x: number,border_col_y: number,border_col_z: number,border_col_w: number)
+  ImageButton: function(user_texture_id: Image_,size_x: number,size_y: number,uv0_x: number,uv0_y: number,uv1_x: number,uv1_y: number,frame_padding: number,bg_col_x: number,bg_col_y: number,bg_col_z: number,bg_col_w: number,tint_col_x: number,tint_col_y: number,tint_col_z: number,tint_col_w: number): boolean
   Indent: function(indent_w: number)
-  InputDouble: function(label: string,v: number,step: number,step_fast: number,format: string,flags: flags): number,boolean
-  InputFloat: function(label: string,v: number,step: number,step_fast: number,format: string,flags: flags): number,boolean
-  InputFloat2: function(label: string,v: table,format: string,flags: flags): number,number,boolean
-  InputFloat3: function(label: string,v: table,format: string,flags: flags): number,number,number,boolean
-  InputFloat4: function(label: string,v: table,format: string,flags: flags): number,number,number,number,boolean
-  InputInt: function(label: string,v: number,step: number,step_fast: number,flags: flags): number,boolean
-  InputInt2: function(label: string,v: table,flags: flags): number,number,boolean
-  InputInt3: function(label: string,v: table,flags: flags): number,number,number,boolean
-  InputInt4: function(label: string,v: table,flags: flags): number,number,number,number,boolean
-  InputText: function(label: string,str: string,flags: flags,callback: function): string,boolean
-  InputTextMultiline: function(label: string,str: string,size_x: number,size_y: number,flags: flags,callback: function): string,boolean
-  InputTextWithHint: function(label: string,hint: string,str: string,flags: flags,callback: function): string,boolean
-  InvisibleButton: function(str_id: string,size_x: number,size_y: number,flags: flags): boolean
+  InputDouble: function(label: string,v: number,step: number,step_fast: number,format: string,flags: ImGuiInputTextFlags_): number,boolean
+  InputFloat: function(label: string,v: number,step: number,step_fast: number,format: string,flags: ImGuiInputTextFlags_): number,boolean
+  InputFloat2: function(label: string,v: table,format: string,flags: ImGuiInputTextFlags_): number,number,boolean
+  InputFloat3: function(label: string,v: table,format: string,flags: ImGuiInputTextFlags_): number,number,number,boolean
+  InputFloat4: function(label: string,v: table,format: string,flags: ImGuiInputTextFlags_): number,number,number,number,boolean
+  InputInt: function(label: string,v: number,step: number,step_fast: number,flags: ImGuiInputTextFlags_): number,boolean
+  InputInt2: function(label: string,v: table,flags: ImGuiInputTextFlags_): number,number,boolean
+  InputInt3: function(label: string,v: table,flags: ImGuiInputTextFlags_): number,number,number,boolean
+  InputInt4: function(label: string,v: table,flags: ImGuiInputTextFlags_): number,number,number,number,boolean
+  InputText: function(label: string,str: string,flags: ImGuiInputTextFlags_,callback: function): string,boolean
+  InputTextMultiline: function(label: string,str: string,size_x: number,size_y: number,flags: ImGuiInputTextFlags_,callback: function): string,boolean
+  InputTextWithHint: function(label: string,hint: string,str: string,flags: ImGuiInputTextFlags_,callback: function): string,boolean
+  InvisibleButton: function(str_id: string,size_x: number,size_y: number,flags: ImGuiButtonFlags_): boolean
   IsAnyItemActive: function(): boolean
   IsAnyItemFocused: function(): boolean
   IsAnyItemHovered: function(): boolean
@@ -749,7 +785,7 @@ global type imgui = record
   IsItemDeactivatedAfterEdit: function(): boolean
   IsItemEdited: function(): boolean
   IsItemFocused: function(): boolean
-  IsItemHovered: function(flags: flags): boolean
+  IsItemHovered: function(flags: ImGuiHoveredFlags_): boolean
   IsItemToggledOpen: function(): boolean
   IsItemVisible: function(): boolean
   IsKeyDown: function(user_key_index: number): boolean
@@ -762,13 +798,13 @@ global type imgui = record
   IsMouseHoveringRect: function(r_min_x: number,r_min_y: number,r_max_x: number,r_max_y: number,clip: boolean): boolean
   IsMousePosValid: function(mouse_pos_x: number,mouse_pos_y: number): boolean
   IsMouseReleased: function(button: ImGuiMouseButton_): boolean
-  IsPopupOpen: function(str_id: string,flags: flags): boolean
+  IsPopupOpen: function(str_id: string,flags: ImGuiPopupFlags_): boolean
   IsRectVisible: function(rect_min_x: number,rect_min_y: number,rect_max_x: number,rect_max_y: number): boolean
   IsWindowAppearing: function(): boolean
   IsWindowCollapsed: function(): boolean
   IsWindowDocked: function(): boolean
-  IsWindowFocused: function(flags: flags): boolean
-  IsWindowHovered: function(flags: flags): boolean
+  IsWindowFocused: function(flags: ImGuiFocusedFlags_): boolean
+  IsWindowHovered: function(flags: ImGuiHoveredFlags_): boolean
   LabelText: function(label: string,fmt: string)
   ListBoxFooter: function()
   ListBoxHeaderItems: function(label: string,items_count: number,height_in_items: number): boolean
@@ -784,8 +820,8 @@ global type imgui = record
   NewFrame: function()
   NewLine: function()
   NextColumn: function()
-  OpenPopup: function(str_id: string,popup_flags: flags)
-  OpenPopupOnItemClick: function(str_id: string,popup_flags: flags)
+  OpenPopup: function(str_id: string,popup_flags: ImGuiPopupFlags_)
+  OpenPopupOnItemClick: function(str_id: string,popup_flags: ImGuiPopupFlags_)
   PopAllowKeyboardFocus: function()
   PopButtonRepeat: function()
   PopClipRect: function()
@@ -809,13 +845,13 @@ global type imgui = record
   ResetMouseDragDelta: function(button: ImGuiMouseButton_)
   SameLine: function(offset_from_start_x: number,spacing: number)
   SaveIniSettingsToDisk: function(ini_filename: string)
-  Selectable: function(label: string,p_selected: boolean,flags: flags,size_x: number,size_y: number): boolean,boolean
+  Selectable: function(label: string,p_selected: boolean,flags: ImGuiSelectableFlags_,size_x: number,size_y: number): boolean,boolean
   Separator: function()
   SetClipboardText: function(text: string)
-  SetColorEditOptions: function(flags: flags)
+  SetColorEditOptions: function(flags: ImGuiColorEditFlags_)
   SetColumnOffset: function(column_index: number,offset_x: number)
   SetColumnWidth: function(column_index: number,width: number)
-  SetCurrentContext: function(ctx: unknown)
+  SetCurrentContext: function(ctx: any)
   SetCursorPos: function(local_pos_x: number,local_pos_y: number)
   SetCursorPosX: function(local_x: number)
   SetCursorPosY: function(local_y: number)
@@ -851,24 +887,24 @@ global type imgui = record
   ShowDemoWindow: function(p_open: boolean): boolean
   ShowFontSelector: function(label: string)
   ShowMetricsWindow: function(p_open: boolean): boolean
-  ShowStyleEditor: function(ref: unknown)
+  ShowStyleEditor: function(ref: any)
   ShowStyleSelector: function(label: string): boolean
   ShowUserGuide: function()
-  SliderAngle: function(label: string,v_rad: number,v_degrees_min: number,v_degrees_max: number,format: string,flags: flags): number,boolean
-  SliderFloat: function(label: string,v: number,v_min: number,v_max: number,format: string,flags: flags): number,boolean
-  SliderFloat2: function(label: string,v: table,v_min: number,v_max: number,format: string,flags: flags): number,number,boolean
-  SliderFloat3: function(label: string,v: table,v_min: number,v_max: number,format: string,flags: flags): number,number,number,boolean
-  SliderFloat4: function(label: string,v: table,v_min: number,v_max: number,format: string,flags: flags): number,number,number,number,boolean
-  SliderInt: function(label: string,v: number,v_min: number,v_max: number,format: string,flags: flags): number,boolean
-  SliderInt2: function(label: string,v: table,v_min: number,v_max: number,format: string,flags: flags): number,number,boolean
-  SliderInt3: function(label: string,v: table,v_min: number,v_max: number,format: string,flags: flags): number,number,number,boolean
-  SliderInt4: function(label: string,v: table,v_min: number,v_max: number,format: string,flags: flags): number,number,number,number,boolean
+  SliderAngle: function(label: string,v_rad: number,v_degrees_min: number,v_degrees_max: number,format: string,flags: ImGuiSliderFlags_): number,boolean
+  SliderFloat: function(label: string,v: number,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,boolean
+  SliderFloat2: function(label: string,v: table,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,number,boolean
+  SliderFloat3: function(label: string,v: table,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,number,number,boolean
+  SliderFloat4: function(label: string,v: table,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,number,number,number,boolean
+  SliderInt: function(label: string,v: number,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,boolean
+  SliderInt2: function(label: string,v: table,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,number,boolean
+  SliderInt3: function(label: string,v: table,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,number,number,boolean
+  SliderInt4: function(label: string,v: table,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,number,number,number,boolean
   SmallButton: function(label: string): boolean
   Spacing: function()
-  StyleColorsClassic: function(dst: unknown)
-  StyleColorsDark: function(dst: unknown)
-  StyleColorsLight: function(dst: unknown)
-  TabItemButton: function(label: string,flags: flags): boolean
+  StyleColorsClassic: function(dst: any)
+  StyleColorsDark: function(dst: any)
+  StyleColorsLight: function(dst: any)
+  TabItemButton: function(label: string,flags: ImGuiTabItemFlags_): boolean
   TableGetColumnCount: function(): number
   TableGetColumnIndex: function(): number
   TableGetColumnName: function(column_n: number): number
@@ -876,10 +912,10 @@ global type imgui = record
   TableHeader: function(label: string)
   TableHeadersRow: function()
   TableNextColumn: function(): boolean
-  TableNextRow: function(row_flags: flags,min_row_height: number)
+  TableNextRow: function(row_flags: ImGuiTableRowFlags_,min_row_height: number)
   TableSetBgColor: function(target: ImGuiTableBgTarget_,color: number,column_n: number)
   TableSetColumnIndex: function(column_n: number): boolean
-  TableSetupColumn: function(label: string,flags: flags,init_width_or_weight: number,user_id: number)
+  TableSetupColumn: function(label: string,flags: ImGuiTableColumnFlags_,init_width_or_weight: number,user_id: number)
   TableSetupScrollFreeze: function(cols: number,rows: number)
   Text: function(fmt: string)
   TextColored: function(col_x: number,col_y: number,col_z: number,col_w: number,fmt: string)
@@ -887,13 +923,13 @@ global type imgui = record
   TextUnformatted: function(text: string,text_end: string)
   TextWrapped: function(fmt: string)
   TreeNode: function(str_id: string,fmt: string): boolean
-  TreeNodeEx: function(str_id: string,flags: flags,fmt: string): boolean
+  TreeNodeEx: function(str_id: string,flags: ImGuiTreeNodeFlags_,fmt: string): boolean
   TreePop: function()
   TreePush: function(str_id: string)
   Unindent: function(indent_w: number)
   UpdatePlatformWindows: function()
-  VSliderFloat: function(label: string,size_x: number,size_y: number,v: number,v_min: number,v_max: number,format: string,flags: flags): number,boolean
-  VSliderInt: function(label: string,size_x: number,size_y: number,v: number,v_min: number,v_max: number,format: string,flags: flags): number,boolean
+  VSliderFloat: function(label: string,size_x: number,size_y: number,v: number,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,boolean
+  VSliderInt: function(label: string,size_x: number,size_y: number,v: number,v_min: number,v_max: number,format: string,flags: ImGuiSliderFlags_): number,boolean
   Value: function(prefix: string,v: number,float_format: string)
 --------------
   AddBezierCubic: function(p1_x: number,p1_y: number,p2_x: number,p2_y: number,p3_x: number,p3_y: number,p4_x: number,p4_y: number,col: number,thickness: number,num_segments: number)
@@ -901,26 +937,25 @@ global type imgui = record
   AddCircle: function(center_x: number,center_y: number,radius: number,col: number,num_segments: number,thickness: number)
   AddCircleFilled: function(center_x: number,center_y: number,radius: number,col: number,num_segments: number)
   AddDrawCmd: function()
-  AddImage: function(user_texture_id: Image,p_min_x: number,p_min_y: number,p_max_x: number,p_max_y: number,uv_min_x: number,uv_min_y: number,uv_max_x: number,uv_max_y: number,col: number)
-  AddImageQuad: function(user_texture_id: Image,p1_x: number,p1_y: number,p2_x: number,p2_y: number,p3_x: number,p3_y: number,p4_x: number,p4_y: number,uv1_x: number,uv1_y: number,uv2_x: number,uv2_y: number,uv3_x: number,uv3_y: number,uv4_x: number,uv4_y: number,col: number)
-  AddImageRounded: function(user_texture_id: Image,p_min_x: number,p_min_y: number,p_max_x: number,p_max_y: number,uv_min_x: number,uv_min_y: number,uv_max_x: number,uv_max_y: number,col: number,rounding: number,rounding_corners: flags)
+  AddImage: function(user_texture_id: Image_,p_min_x: number,p_min_y: number,p_max_x: number,p_max_y: number,uv_min_x: number,uv_min_y: number,uv_max_x: number,uv_max_y: number,col: number)
+  AddImageQuad: function(user_texture_id: Image_,p1_x: number,p1_y: number,p2_x: number,p2_y: number,p3_x: number,p3_y: number,p4_x: number,p4_y: number,uv1_x: number,uv1_y: number,uv2_x: number,uv2_y: number,uv3_x: number,uv3_y: number,uv4_x: number,uv4_y: number,col: number)
+  AddImageRounded: function(user_texture_id: Image_,p_min_x: number,p_min_y: number,p_max_x: number,p_max_y: number,uv_min_x: number,uv_min_y: number,uv_max_x: number,uv_max_y: number,col: number,rounding: number,rounding_corners: ImDrawCornerFlags_)
   AddLine: function(p1_x: number,p1_y: number,p2_x: number,p2_y: number,col: number,thickness: number)
   AddNgon: function(center_x: number,center_y: number,radius: number,col: number,num_segments: number,thickness: number)
   AddNgonFilled: function(center_x: number,center_y: number,radius: number,col: number,num_segments: number)
   AddQuad: function(p1_x: number,p1_y: number,p2_x: number,p2_y: number,p3_x: number,p3_y: number,p4_x: number,p4_y: number,col: number,thickness: number)
   AddQuadFilled: function(p1_x: number,p1_y: number,p2_x: number,p2_y: number,p3_x: number,p3_y: number,p4_x: number,p4_y: number,col: number)
-  AddRect: function(p_min_x: number,p_min_y: number,p_max_x: number,p_max_y: number,col: number,rounding: number,rounding_corners: flags,thickness: number)
-  AddRectFilled: function(p_min_x: number,p_min_y: number,p_max_x: number,p_max_y: number,col: number,rounding: number,rounding_corners: flags)
+  AddRect: function(p_min_x: number,p_min_y: number,p_max_x: number,p_max_y: number,col: number,rounding: number,rounding_corners: ImDrawCornerFlags_,thickness: number)
+  AddRectFilled: function(p_min_x: number,p_min_y: number,p_max_x: number,p_max_y: number,col: number,rounding: number,rounding_corners: ImDrawCornerFlags_)
   AddRectFilledMultiColor: function(p_min_x: number,p_min_y: number,p_max_x: number,p_max_y: number,col_upr_left: number,col_upr_right: number,col_bot_right: number,col_bot_left: number)
   AddText: function(pos_x: number,pos_y: number,col: number,text_begin: string,text_end: string)
   AddTriangle: function(p1_x: number,p1_y: number,p2_x: number,p2_y: number,p3_x: number,p3_y: number,col: number,thickness: number)
   AddTriangleFilled: function(p1_x: number,p1_y: number,p2_x: number,p2_y: number,p3_x: number,p3_y: number,col: number)
-  CloneOutput: function(): userdata
   PathArcTo: function(center_x: number,center_y: number,radius: number,a_min: number,a_max: number,num_segments: number)
   PathArcToFast: function(center_x: number,center_y: number,radius: number,a_min_of_12: number,a_max_of_12: number)
   PathBezierCubicCurveTo: function(p2_x: number,p2_y: number,p3_x: number,p3_y: number,p4_x: number,p4_y: number,num_segments: number)
   PathBezierQuadraticCurveTo: function(p2_x: number,p2_y: number,p3_x: number,p3_y: number,num_segments: number)
-  PathRect: function(rect_min_x: number,rect_min_y: number,rect_max_x: number,rect_max_y: number,rounding: number,rounding_corners: flags)
+  PathRect: function(rect_min_x: number,rect_min_y: number,rect_max_x: number,rect_max_y: number,rounding: number,rounding_corners: ImDrawCornerFlags_)
   PopClipRect: function()
   PopTextureID: function()
   PrimRect: function(a_x: number,a_y: number,b_x: number,b_y: number,col: number)
@@ -928,7 +963,7 @@ global type imgui = record
   PrimUnreserve: function(idx_count: number,vtx_count: number)
   PushClipRect: function(clip_rect_min_x: number,clip_rect_min_y: number,clip_rect_max_x: number,clip_rect_max_y: number,intersect_with_current_clip_rect: boolean)
   PushClipRectFullScreen: function()
-  PushTextureID: function(texture_id: Image)
+  PushTextureID: function(texture_id: Image_)
   _ClearFreeMemory: function()
   _OnChangedClipRect: function()
   _OnChangedTextureID: function()

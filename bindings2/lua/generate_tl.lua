@@ -25,30 +25,6 @@ local function createEnumRefType(name)
 	return {type = 'ref', name = name}
 end
 
-local keywords = {
-    ["do"] = true,
-    ["end"] = true,
-    ["while"] = true,
-    ["repeat"] = true,
-    ["until"] = true,
-    ["if"] = true,
-    ["then"] = true,
-    ["elseif"] = true,
-    ["else"] = true,
-    ["for"] = true,
-    ["in"] = true,
-    ["function"] = true,
-    ["local"] = true,
-    ["return"] = true,
-    ["break"] = true,
-    ["nil"] = true,
-    ["true"] = true,
-    ["false"] = true,
-    ["and"] = true,
-    ["or"] = true,
-    ["not"] = true,
-}
-
 local function addFunctions(tableType, imguiFunctions)
 	for name, fnData in util.sortedPairs(imguiFunctions.validNames) do
 		local fn = createFunctionType()
@@ -130,6 +106,30 @@ local helpers = {}
 local aliases = {}
 local functions = ''
 
+local keywords = {
+    ["do"] = true,
+    ["end"] = true,
+    ["while"] = true,
+    ["repeat"] = true,
+    ["until"] = true,
+    ["if"] = true,
+    ["then"] = true,
+    ["elseif"] = true,
+    ["else"] = true,
+    ["for"] = true,
+    ["in"] = true,
+    ["function"] = true,
+    ["local"] = true,
+    ["return"] = true,
+    ["break"] = true,
+    ["nil"] = true,
+    ["true"] = true,
+    ["false"] = true,
+    ["and"] = true,
+    ["or"] = true,
+    ["not"] = true,
+}
+
 local function checkArgNameForKeyword(name)
     if keywords[name] then
         return name .. '_'
@@ -144,9 +144,9 @@ local function printFuncs(t)
     for k, v in pairs(t) do
         print('-------', k, tostring(v))
     end
-    local file = io.open('dump-2.txt', 'w+')
-    file:write(inspect(t))
-    file:close()
+    --local file = io.open('dump-2.txt', 'w+')
+    --file:write(inspect(t))
+    --file:close()
 
     -- TODO добавить не только validNames
     for k, v in pairs(t.validNames) do
@@ -154,34 +154,62 @@ local function printFuncs(t)
         local params = ''
         local comma = ','
         local rets = ''
+        local excludeFunction = false
+
+        --if k == "Init" then
+            --print(k, inspect(v))
+            ----os.exit()
+        --end
+
         if v.luaArgumentTypes then
             for i, argtype in pairs(v.luaArgumentTypes) do
+
                 if i == #v.luaArgumentTypes then
                     comma = ''
                 end
+
                 local name = checkArgNameForKeyword(argtype.name)
                 if argtype.type == 'enum' then
                     params = params .. name .. ': ' .. argtype.enum .. '_' .. comma
-                    --table.insert(aliases, argtype.enum)
                     aliases[argtype.enum] = true
+                elseif argtype.type == "flags" then
+                    params = params .. name .. ': ' .. argtype.enum .. '_' .. comma
+                    aliases[argtype.enum] = true
+                elseif argtype.type == "unknown" then
+                    params = params .. name .. ': ' .. 'any' .. comma
+                elseif argtype.type == "Image" then
+                    params = params .. name .. ': ' .. 'Image_' .. comma
                 else
                     params = params .. name .. ': ' .. argtype.type .. comma
                 end
             end
         end
+
         if v.luaReturnTypes and #v.luaReturnTypes >= 1 then
             comma = ','
             rets = rets .. ': '
             for i, rettype in pairs(v.luaReturnTypes) do
+                if rettype.type == "lightuserdata" or
+                   rettype.type == "userdata" then
+                   excludeFunction = true
+                   break
+                end
                 if i == #v.luaReturnTypes then
                     comma = ''
                 end
-                rets = rets .. rettype.type .. comma
+                if rettype.type ~= "unknown" then
+                    rets = rets .. rettype.type .. comma
+                else
+                    rets = rets .. "any" .. comma
+                end
             end
         end
+
         local proto = string.format(': function(%s)%s', params, rets)
         --ret = ret .. '  ' .. k .. proto
-        dict[k] = proto
+        if not excludeFunction then
+            dict[k] = proto
+        end
     end
     --print(inspect(t.fnData))
     --print(inspect(t.validNames))
@@ -197,9 +225,9 @@ function helpers.generateAliases(imgui)
 end
 
 function helpers.prepare(imgui)
-    local file = io.open('dump-1.txt', 'w+')
-    file:write(inspect(imgui))
-    file:close()
+    --local file = io.open('dump-1.txt', 'w+')
+    --file:write(inspect(imgui))
+    --file:close()
 
     functions = helpers.generateFunctionsInternal(imgui)
     return ''
