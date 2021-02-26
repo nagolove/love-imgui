@@ -404,6 +404,13 @@ bool GetWantTextInput()
 	return io.WantTextInput;
 }
 
+static const ImWchar ranges[] =
+{
+    0x0020, 0x00FF,
+    0x0400, 0x044F,
+    0,
+};
+
 // Fonts
 void SetGlobalFontFromFileTTF(const char *path, float size_pixels, float spacing_x, float spacing_y, float oversample_x, float oversample_y)
 {
@@ -413,7 +420,7 @@ void SetGlobalFontFromFileTTF(const char *path, float size_pixels, float spacing
     conf.OversampleV = static_cast<int>(oversample_y);
     conf.GlyphExtraSpacing.x = spacing_x;
     conf.GlyphExtraSpacing.y = spacing_y;
-    ImFont *font = io.Fonts->AddFontFromFileTTF(path, size_pixels, &conf);
+    ImFont *font = io.Fonts->AddFontFromFileTTF(path, size_pixels, &conf, ranges);
     globalFont = font;
     //printf("SetGlobalFontFromFileTTF %p\n", font);
     //printf("g_L %p\n", g_L);
@@ -489,7 +496,7 @@ void SetGlobalFontFromArchiveTTF(const char *path, float size_pixels, float spac
     //dumpstack(g_L);
     //printf("dump2\n");
 
-    ImFont *font = io.Fonts->AddFontFromMemoryTTF(ptr, size, size_pixels, &conf);
+    ImFont *font = io.Fonts->AddFontFromMemoryTTF(ptr, size, size_pixels, &conf, ranges);
     globalFont = font;
     //printf("SetGlobalFontFromFileTTF %p\n", font);
     //printf("g_L %p\n", g_L);

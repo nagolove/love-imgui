@@ -249,6 +249,13 @@ static int w_SetGlobalFontFromArchiveTTF(lua_State *L)
 	return 0;
 }
 
+static const ImWchar ranges[] =
+{
+    0x0020, 0x00FF,
+    0x0400, 0x044F,
+    0,
+};
+
 static int w_AddFontFromFileTTF(lua_State *L) {
     size_t filenameSize;
     const char* filename = luaL_checklstring(L, 1, &filenameSize);
@@ -265,7 +272,7 @@ static int w_AddFontFromFileTTF(lua_State *L) {
     snprintf(&(fullPath[0]), sizeof(fullPath) - 1, "%s/%s", basePath, filename);
 
     ImGuiIO& io = ImGui::GetIO();
-    ImFont* font = io.Fonts->AddFontFromFileTTF(&(fullPath[0]), pixelSize);
+    ImFont* font = io.Fonts->AddFontFromFileTTF(&(fullPath[0]), pixelSize, nullptr, ranges);
     lua_settop(L, 0);
 
     if (font == nullptr) {
