@@ -1,6 +1,6 @@
 local json = require 'bindings2.dkjson'
 local util = require 'bindings2.util'
-local inspect = require 'inspect'
+--local inspect = require 'inspect'
 
 local function jsonObject(t)
 	return setmetatable(t or {}, {__jsontype = "object"})
